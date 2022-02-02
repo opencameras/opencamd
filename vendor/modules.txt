@@ -1,0 +1,178 @@
+# github.com/3d0c/gmf v0.0.0-20220124083110-7fb722c9a48e
+github.com/3d0c/gmf
+# github.com/PuerkitoBio/purell v1.1.1
+github.com/PuerkitoBio/purell
+# github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578
+github.com/PuerkitoBio/urlesc
+# github.com/asaskevich/govalidator v0.0.0-20200907205600-7a23bdc65eef
+github.com/asaskevich/govalidator
+# github.com/docker/go-units v0.4.0
+github.com/docker/go-units
+# github.com/go-openapi/analysis v0.20.1
+github.com/go-openapi/analysis
+github.com/go-openapi/analysis/internal/debug
+github.com/go-openapi/analysis/internal/flatten/normalize
+github.com/go-openapi/analysis/internal/flatten/operations
+github.com/go-openapi/analysis/internal/flatten/replace
+github.com/go-openapi/analysis/internal/flatten/schutils
+github.com/go-openapi/analysis/internal/flatten/sortref
+# github.com/go-openapi/errors v0.20.2
+github.com/go-openapi/errors
+# github.com/go-openapi/jsonpointer v0.19.5
+github.com/go-openapi/jsonpointer
+# github.com/go-openapi/jsonreference v0.19.6
+github.com/go-openapi/jsonreference
+# github.com/go-openapi/loads v0.21.0
+github.com/go-openapi/loads
+# github.com/go-openapi/runtime v0.22.0
+github.com/go-openapi/runtime
+github.com/go-openapi/runtime/client
+github.com/go-openapi/runtime/flagext
+github.com/go-openapi/runtime/logger
+github.com/go-openapi/runtime/middleware
+github.com/go-openapi/runtime/middleware/denco
+github.com/go-openapi/runtime/middleware/header
+github.com/go-openapi/runtime/middleware/untyped
+github.com/go-openapi/runtime/security
+github.com/go-openapi/runtime/yamlpc
+# github.com/go-openapi/spec v0.20.4
+github.com/go-openapi/spec
+# github.com/go-openapi/strfmt v0.21.1
+github.com/go-openapi/strfmt
+# github.com/go-openapi/swag v0.21.1
+github.com/go-openapi/swag
+# github.com/go-openapi/validate v0.20.3
+github.com/go-openapi/validate
+# github.com/go-stack/stack v1.8.0
+github.com/go-stack/stack
+# github.com/google/uuid v1.3.0
+github.com/google/uuid
+# github.com/jessevdk/go-flags v1.5.0
+github.com/jessevdk/go-flags
+# github.com/josharian/intern v1.0.0
+github.com/josharian/intern
+# github.com/mailru/easyjson v0.7.6
+github.com/mailru/easyjson/buffer
+github.com/mailru/easyjson/jlexer
+github.com/mailru/easyjson/jwriter
+# github.com/mitchellh/mapstructure v1.4.1
+github.com/mitchellh/mapstructure
+# github.com/oklog/ulid v1.3.1
+github.com/oklog/ulid
+# github.com/opentracing/opentracing-go v1.2.0
+github.com/opentracing/opentracing-go
+github.com/opentracing/opentracing-go/ext
+github.com/opentracing/opentracing-go/log
+# github.com/pion/datachannel v1.4.21
+github.com/pion/datachannel
+# github.com/pion/dtls/v2 v2.0.9
+github.com/pion/dtls/v2
+github.com/pion/dtls/v2/internal/ciphersuite
+github.com/pion/dtls/v2/internal/closer
+github.com/pion/dtls/v2/internal/util
+github.com/pion/dtls/v2/pkg/crypto/ccm
+github.com/pion/dtls/v2/pkg/crypto/ciphersuite
+github.com/pion/dtls/v2/pkg/crypto/clientcertificate
+github.com/pion/dtls/v2/pkg/crypto/elliptic
+github.com/pion/dtls/v2/pkg/crypto/fingerprint
+github.com/pion/dtls/v2/pkg/crypto/hash
+github.com/pion/dtls/v2/pkg/crypto/prf
+github.com/pion/dtls/v2/pkg/crypto/signature
+github.com/pion/dtls/v2/pkg/crypto/signaturehash
+github.com/pion/dtls/v2/pkg/protocol
+github.com/pion/dtls/v2/pkg/protocol/alert
+github.com/pion/dtls/v2/pkg/protocol/extension
+github.com/pion/dtls/v2/pkg/protocol/handshake
+github.com/pion/dtls/v2/pkg/protocol/recordlayer
+# github.com/pion/example-webrtc-applications/v3 v3.0.5
+github.com/pion/example-webrtc-applications/v3/internal/signal
+# github.com/pion/ice/v2 v2.1.12
+github.com/pion/ice/v2
+# github.com/pion/interceptor v0.0.15
+github.com/pion/interceptor
+github.com/pion/interceptor/pkg/nack
+github.com/pion/interceptor/pkg/report
+# github.com/pion/logging v0.2.2
+github.com/pion/logging
+# github.com/pion/mdns v0.0.5
+github.com/pion/mdns
+# github.com/pion/randutil v0.1.0
+github.com/pion/randutil
+# github.com/pion/rtcp v1.2.6
+github.com/pion/rtcp
+# github.com/pion/rtp v1.7.1
+github.com/pion/rtp
+github.com/pion/rtp/codecs
+# github.com/pion/sctp v1.7.12
+github.com/pion/sctp
+# github.com/pion/sdp/v3 v3.0.4
+github.com/pion/sdp/v3
+# github.com/pion/srtp/v2 v2.0.5
+github.com/pion/srtp/v2
+# github.com/pion/stun v0.3.5
+github.com/pion/stun
+github.com/pion/stun/internal/hmac
+# github.com/pion/transport v0.12.3
+github.com/pion/transport/connctx
+github.com/pion/transport/deadline
+github.com/pion/transport/packetio
+github.com/pion/transport/replaydetector
+github.com/pion/transport/vnet
+# github.com/pion/turn/v2 v2.0.5
+github.com/pion/turn/v2
+github.com/pion/turn/v2/internal/allocation
+github.com/pion/turn/v2/internal/client
+github.com/pion/turn/v2/internal/ipnet
+github.com/pion/turn/v2/internal/proto
+github.com/pion/turn/v2/internal/server
+# github.com/pion/udp v0.1.1
+github.com/pion/udp
+# github.com/pion/webrtc/v3 v3.1.0-beta.3
+github.com/pion/webrtc/v3
+github.com/pion/webrtc/v3/internal/fmtp
+github.com/pion/webrtc/v3/internal/mux
+github.com/pion/webrtc/v3/internal/util
+github.com/pion/webrtc/v3/pkg/media
+github.com/pion/webrtc/v3/pkg/media/h264reader
+github.com/pion/webrtc/v3/pkg/media/oggreader
+github.com/pion/webrtc/v3/pkg/rtcerr
+# github.com/pkg/errors v0.9.1
+github.com/pkg/errors
+# go.mongodb.org/mongo-driver v1.7.5
+go.mongodb.org/mongo-driver/bson
+go.mongodb.org/mongo-driver/bson/bsoncodec
+go.mongodb.org/mongo-driver/bson/bsonoptions
+go.mongodb.org/mongo-driver/bson/bsonrw
+go.mongodb.org/mongo-driver/bson/bsontype
+go.mongodb.org/mongo-driver/bson/primitive
+go.mongodb.org/mongo-driver/x/bsonx/bsoncore
+# golang.org/x/crypto v0.0.0-20210812204632-0ba0e8f03122
+golang.org/x/crypto/cryptobyte
+golang.org/x/crypto/cryptobyte/asn1
+golang.org/x/crypto/curve25519
+golang.org/x/crypto/curve25519/internal/field
+# golang.org/x/net v0.0.0-20220127200216-cd36cc0744dd
+golang.org/x/net/bpf
+golang.org/x/net/dns/dnsmessage
+golang.org/x/net/idna
+golang.org/x/net/internal/iana
+golang.org/x/net/internal/socket
+golang.org/x/net/internal/socks
+golang.org/x/net/ipv4
+golang.org/x/net/netutil
+golang.org/x/net/proxy
+# golang.org/x/sys v0.0.0-20211216021012-1d35b9e2eb4e
+golang.org/x/sys/internal/unsafeheader
+golang.org/x/sys/unix
+golang.org/x/sys/windows
+# golang.org/x/text v0.3.7
+golang.org/x/text/secure/bidirule
+golang.org/x/text/transform
+golang.org/x/text/unicode/bidi
+golang.org/x/text/unicode/norm
+golang.org/x/text/width
+# golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1
+golang.org/x/xerrors
+golang.org/x/xerrors/internal
+# gopkg.in/yaml.v2 v2.4.0
+gopkg.in/yaml.v2
