@@ -3,22 +3,66 @@
 package main
 
 import (
+	"github.com/go-openapi/runtime"
+	"github.com/pion/webrtc/v3"
 	"log"
+	"net/http"
 	"os"
 
 	"github.com/go-openapi/loads"
+	"github.com/go-openapi/runtime/middleware"
 	"github.com/jessevdk/go-flags"
+	"github.com/opencameras/opencamd/gen/opencamera/models"
 	"github.com/opencameras/opencamd/gen/opencamera/restapi"
 	"github.com/opencameras/opencamd/gen/opencamera/restapi/operations"
+	"github.com/opencameras/opencamd/gen/opencamera/restapi/operations/media"
+	mediaImpl "github.com/opencameras/opencamd/pkg/media"
+)
+
+var (
+	videoSource *mediaImpl.LocalFile
+	audioSource *mediaImpl.LocalFile
 )
 
 func createAPIBackend(swaggerSpec *loads.Document) *operations.OpenCameraAPI {
 	api := operations.NewOpenCameraAPI(swaggerSpec)
 
+	api.JSONConsumer = runtime.JSONConsumer()
+
+	api.BasicAuthAuth = func(user string, pass string) (*models.User, error) {
+		return &models.User{}, nil
+	}
+	api.KeyAuth = func(token string) (*models.User, error) {
+		return &models.User{}, nil
+	}
+	api.MediaStartLiveSessionHandler = media.StartLiveSessionHandlerFunc(
+		func(params media.StartLiveSessionParams, principal *models.User) middleware.Responder {
+			m := &mediaImpl.WebrtcSession{
+				VideoSource: videoSource,
+				StunServers: []string{"stun:stun.l.google.com:19302"},
+			}
+			closeChan := make(chan struct{})
+			sdp, err := m.Start(webrtc.SessionDescription{
+				Type: webrtc.NewSDPType(params.Body.Type),
+				SDP: params.Body.Sdp,
+			}, closeChan)
+			if err != nil {
+				return middleware.Error(http.StatusInternalServerError, err)
+			}
+			return media.NewStartLiveSessionOK().WithPayload(&models.SDP{
+				Type: sdp.Type.String(),
+				Sdp: sdp.SDP,
+			})
+	})
+
 	return api
 }
 
 func main() {
+	// TODO: change to use input
+	videoSource = &mediaImpl.LocalFile{Filename: "output.h264"}
+	audioSource = &mediaImpl.LocalFile{Filename: "output.ogg"}
+
 	swaggerSpec, err := loads.Embedded(restapi.SwaggerJSON, restapi.FlatSwaggerJSON)
 	if err != nil {
 		log.Fatalln(err)

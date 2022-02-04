@@ -1,0 +1,26 @@
+<script src="demo.js"></script>
+
+<button id="start" onclick="window.startSession()" disabled> Start Session </button><br />
+<br />
+
+Logs<br />
+<div id="div">Generating browser side session description</div>
+<br />
+
+Video<br />
+<div id="remoteVideos"></div> <br />
+
+Beautified Session Description<br />
+<table style="width:100%;height: auto">
+    <tr>
+        <th>Local SDP</th>
+        <th>Remote SDP</th>
+    </tr>
+    <tr>
+        <td><textarea id="localSessionDescription" readonly="true" style="width:100%"></textarea> <br /></td>
+        <td style="vertical-align:baseline"><textarea id="remoteSessionDescription" readonly="true" style="width:100%"></textarea> <br /></td>
+    </tr>
+</table>
+
+Original Session Description<br />
+<textarea id="localSessionDescriptionOrig" readonly="true" style="width:100%"></textarea> <br /></td>
