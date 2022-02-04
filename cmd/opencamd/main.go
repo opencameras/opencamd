@@ -6,15 +6,14 @@ import (
 	"log"
 	"os"
 
+	"github.com/go-openapi/loads"
+	"github.com/jessevdk/go-flags"
 	"github.com/opencameras/opencamd/gen/opencamera/restapi"
 	"github.com/opencameras/opencamd/gen/opencamera/restapi/operations"
 )
 
 func createAPIBackend(swaggerSpec *loads.Document) *operations.OpenCameraAPI {
 	api := operations.NewOpenCameraAPI(swaggerSpec)
-
-	api.BasicAuthAuth = u.BasicAuthentication
-	api.BearerAuthAuth = u.BearerAuthZ
 
 	return api
 }

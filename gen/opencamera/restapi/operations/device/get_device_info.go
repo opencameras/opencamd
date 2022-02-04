@@ -14,16 +14,16 @@ import (
 )
 
 // GetDeviceInfoHandlerFunc turns a function with the right signature into a get device info handler
-type GetDeviceInfoHandlerFunc func(GetDeviceInfoParams, *models.Principal) middleware.Responder
+type GetDeviceInfoHandlerFunc func(GetDeviceInfoParams, *models.User) middleware.Responder
 
 // Handle executing the request and returning a response
-func (fn GetDeviceInfoHandlerFunc) Handle(params GetDeviceInfoParams, principal *models.Principal) middleware.Responder {
+func (fn GetDeviceInfoHandlerFunc) Handle(params GetDeviceInfoParams, principal *models.User) middleware.Responder {
 	return fn(params, principal)
 }
 
 // GetDeviceInfoHandler interface for that can handle valid get device info params
 type GetDeviceInfoHandler interface {
-	Handle(GetDeviceInfoParams, *models.Principal) middleware.Responder
+	Handle(GetDeviceInfoParams, *models.User) middleware.Responder
 }
 
 // NewGetDeviceInfo creates a new http.Handler for the get device info operation
@@ -57,9 +57,9 @@ func (o *GetDeviceInfo) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	if aCtx != nil {
 		*r = *aCtx
 	}
-	var principal *models.Principal
+	var principal *models.User
 	if uprinc != nil {
-		principal = uprinc.(*models.Principal) // this is really a models.Principal, I promise
+		principal = uprinc.(*models.User) // this is really a models.User, I promise
 	}
 
 	if err := o.Context.BindValidRequest(r, route, &Params); err != nil { // bind params

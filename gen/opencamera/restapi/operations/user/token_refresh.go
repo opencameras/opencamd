@@ -19,16 +19,16 @@ import (
 )
 
 // TokenRefreshHandlerFunc turns a function with the right signature into a token refresh handler
-type TokenRefreshHandlerFunc func(TokenRefreshParams, *models.Principal) middleware.Responder
+type TokenRefreshHandlerFunc func(TokenRefreshParams, *models.User) middleware.Responder
 
 // Handle executing the request and returning a response
-func (fn TokenRefreshHandlerFunc) Handle(params TokenRefreshParams, principal *models.Principal) middleware.Responder {
+func (fn TokenRefreshHandlerFunc) Handle(params TokenRefreshParams, principal *models.User) middleware.Responder {
 	return fn(params, principal)
 }
 
 // TokenRefreshHandler interface for that can handle valid token refresh params
 type TokenRefreshHandler interface {
-	Handle(TokenRefreshParams, *models.Principal) middleware.Responder
+	Handle(TokenRefreshParams, *models.User) middleware.Responder
 }
 
 // NewTokenRefresh creates a new http.Handler for the token refresh operation
@@ -60,9 +60,9 @@ func (o *TokenRefresh) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	if aCtx != nil {
 		*r = *aCtx
 	}
-	var principal *models.Principal
+	var principal *models.User
 	if uprinc != nil {
-		principal = uprinc.(*models.Principal) // this is really a models.Principal, I promise
+		principal = uprinc.(*models.User) // this is really a models.User, I promise
 	}
 
 	if err := o.Context.BindValidRequest(r, route, &Params); err != nil { // bind params

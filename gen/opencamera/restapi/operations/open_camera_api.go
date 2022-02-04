@@ -48,49 +48,49 @@ func NewOpenCameraAPI(spec *loads.Document) *OpenCameraAPI {
 
 		JSONProducer: runtime.JSONProducer(),
 
-		UserCreateUserHandler: user.CreateUserHandlerFunc(func(params user.CreateUserParams, principal *models.Principal) middleware.Responder {
+		UserCreateUserHandler: user.CreateUserHandlerFunc(func(params user.CreateUserParams, principal *models.User) middleware.Responder {
 			return middleware.NotImplemented("operation user.CreateUser has not yet been implemented")
 		}),
-		MediaDownloadVideosHandler: media.DownloadVideosHandlerFunc(func(params media.DownloadVideosParams, principal *models.Principal) middleware.Responder {
+		MediaDownloadVideosHandler: media.DownloadVideosHandlerFunc(func(params media.DownloadVideosParams, principal *models.User) middleware.Responder {
 			return middleware.NotImplemented("operation media.DownloadVideos has not yet been implemented")
 		}),
-		MediaGetCameraSDPHandler: media.GetCameraSDPHandlerFunc(func(params media.GetCameraSDPParams, principal *models.Principal) middleware.Responder {
+		MediaGetCameraSDPHandler: media.GetCameraSDPHandlerFunc(func(params media.GetCameraSDPParams, principal *models.User) middleware.Responder {
 			return middleware.NotImplemented("operation media.GetCameraSDP has not yet been implemented")
 		}),
-		DeviceGetDeviceInfoHandler: device.GetDeviceInfoHandlerFunc(func(params device.GetDeviceInfoParams, principal *models.Principal) middleware.Responder {
+		DeviceGetDeviceInfoHandler: device.GetDeviceInfoHandlerFunc(func(params device.GetDeviceInfoParams, principal *models.User) middleware.Responder {
 			return middleware.NotImplemented("operation device.GetDeviceInfo has not yet been implemented")
 		}),
-		SystemGetSystemInfoHandler: system.GetSystemInfoHandlerFunc(func(params system.GetSystemInfoParams, principal *models.Principal) middleware.Responder {
+		SystemGetSystemInfoHandler: system.GetSystemInfoHandlerFunc(func(params system.GetSystemInfoParams, principal *models.User) middleware.Responder {
 			return middleware.NotImplemented("operation system.GetSystemInfo has not yet been implemented")
 		}),
-		UserLogoutUserHandler: user.LogoutUserHandlerFunc(func(params user.LogoutUserParams, principal *models.Principal) middleware.Responder {
+		UserLogoutUserHandler: user.LogoutUserHandlerFunc(func(params user.LogoutUserParams, principal *models.User) middleware.Responder {
 			return middleware.NotImplemented("operation user.LogoutUser has not yet been implemented")
 		}),
-		UserResetPasswordHandler: user.ResetPasswordHandlerFunc(func(params user.ResetPasswordParams, principal *models.Principal) middleware.Responder {
+		UserResetPasswordHandler: user.ResetPasswordHandlerFunc(func(params user.ResetPasswordParams, principal *models.User) middleware.Responder {
 			return middleware.NotImplemented("operation user.ResetPassword has not yet been implemented")
 		}),
-		MediaStartLiveSessionHandler: media.StartLiveSessionHandlerFunc(func(params media.StartLiveSessionParams, principal *models.Principal) middleware.Responder {
+		MediaStartLiveSessionHandler: media.StartLiveSessionHandlerFunc(func(params media.StartLiveSessionParams, principal *models.User) middleware.Responder {
 			return middleware.NotImplemented("operation media.StartLiveSession has not yet been implemented")
 		}),
-		UserTokenObtainHandler: user.TokenObtainHandlerFunc(func(params user.TokenObtainParams, principal *models.Principal) middleware.Responder {
+		UserTokenObtainHandler: user.TokenObtainHandlerFunc(func(params user.TokenObtainParams, principal *models.User) middleware.Responder {
 			return middleware.NotImplemented("operation user.TokenObtain has not yet been implemented")
 		}),
-		UserTokenRefreshHandler: user.TokenRefreshHandlerFunc(func(params user.TokenRefreshParams, principal *models.Principal) middleware.Responder {
+		UserTokenRefreshHandler: user.TokenRefreshHandlerFunc(func(params user.TokenRefreshParams, principal *models.User) middleware.Responder {
 			return middleware.NotImplemented("operation user.TokenRefresh has not yet been implemented")
 		}),
-		MediaUpdateStunServersHandler: media.UpdateStunServersHandlerFunc(func(params media.UpdateStunServersParams, principal *models.Principal) middleware.Responder {
+		MediaUpdateStunServersHandler: media.UpdateStunServersHandlerFunc(func(params media.UpdateStunServersParams, principal *models.User) middleware.Responder {
 			return middleware.NotImplemented("operation media.UpdateStunServers has not yet been implemented")
 		}),
-		SystemUpgradeSystemHandler: system.UpgradeSystemHandlerFunc(func(params system.UpgradeSystemParams, principal *models.Principal) middleware.Responder {
+		SystemUpgradeSystemHandler: system.UpgradeSystemHandlerFunc(func(params system.UpgradeSystemParams, principal *models.User) middleware.Responder {
 			return middleware.NotImplemented("operation system.UpgradeSystem has not yet been implemented")
 		}),
 
 		// Applies when the Authorization header is set with the Basic scheme
-		BasicAuthAuth: func(user string, pass string) (*models.Principal, error) {
+		BasicAuthAuth: func(user string, pass string) (*models.User, error) {
 			return nil, errors.NotImplemented("basic auth  (basicAuth) has not yet been implemented")
 		},
 		// Applies when the "x-token" header is set
-		KeyAuth: func(token string) (*models.Principal, error) {
+		KeyAuth: func(token string) (*models.User, error) {
 			return nil, errors.NotImplemented("api key auth (key) x-token from header param [x-token] has not yet been implemented")
 		},
 		// default authorizer is authorized meaning no requests are blocked
@@ -133,11 +133,11 @@ type OpenCameraAPI struct {
 
 	// BasicAuthAuth registers a function that takes username and password and returns a principal
 	// it performs authentication with basic auth
-	BasicAuthAuth func(string, string) (*models.Principal, error)
+	BasicAuthAuth func(string, string) (*models.User, error)
 
 	// KeyAuth registers a function that takes a token and returns a principal
 	// it performs authentication based on an api key x-token provided in the header
-	KeyAuth func(string) (*models.Principal, error)
+	KeyAuth func(string) (*models.User, error)
 
 	// APIAuthorizer provides access control (ACL/RBAC/ABAC) by providing access to the request and authenticated principal
 	APIAuthorizer runtime.Authorizer

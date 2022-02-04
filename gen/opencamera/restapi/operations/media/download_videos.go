@@ -14,16 +14,16 @@ import (
 )
 
 // DownloadVideosHandlerFunc turns a function with the right signature into a download videos handler
-type DownloadVideosHandlerFunc func(DownloadVideosParams, *models.Principal) middleware.Responder
+type DownloadVideosHandlerFunc func(DownloadVideosParams, *models.User) middleware.Responder
 
 // Handle executing the request and returning a response
-func (fn DownloadVideosHandlerFunc) Handle(params DownloadVideosParams, principal *models.Principal) middleware.Responder {
+func (fn DownloadVideosHandlerFunc) Handle(params DownloadVideosParams, principal *models.User) middleware.Responder {
 	return fn(params, principal)
 }
 
 // DownloadVideosHandler interface for that can handle valid download videos params
 type DownloadVideosHandler interface {
-	Handle(DownloadVideosParams, *models.Principal) middleware.Responder
+	Handle(DownloadVideosParams, *models.User) middleware.Responder
 }
 
 // NewDownloadVideos creates a new http.Handler for the download videos operation
@@ -57,9 +57,9 @@ func (o *DownloadVideos) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	if aCtx != nil {
 		*r = *aCtx
 	}
-	var principal *models.Principal
+	var principal *models.User
 	if uprinc != nil {
-		principal = uprinc.(*models.Principal) // this is really a models.Principal, I promise
+		principal = uprinc.(*models.User) // this is really a models.User, I promise
 	}
 
 	if err := o.Context.BindValidRequest(r, route, &Params); err != nil { // bind params

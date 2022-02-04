@@ -14,16 +14,16 @@ import (
 )
 
 // GetCameraSDPHandlerFunc turns a function with the right signature into a get camera s d p handler
-type GetCameraSDPHandlerFunc func(GetCameraSDPParams, *models.Principal) middleware.Responder
+type GetCameraSDPHandlerFunc func(GetCameraSDPParams, *models.User) middleware.Responder
 
 // Handle executing the request and returning a response
-func (fn GetCameraSDPHandlerFunc) Handle(params GetCameraSDPParams, principal *models.Principal) middleware.Responder {
+func (fn GetCameraSDPHandlerFunc) Handle(params GetCameraSDPParams, principal *models.User) middleware.Responder {
 	return fn(params, principal)
 }
 
 // GetCameraSDPHandler interface for that can handle valid get camera s d p params
 type GetCameraSDPHandler interface {
-	Handle(GetCameraSDPParams, *models.Principal) middleware.Responder
+	Handle(GetCameraSDPParams, *models.User) middleware.Responder
 }
 
 // NewGetCameraSDP creates a new http.Handler for the get camera s d p operation
@@ -57,9 +57,9 @@ func (o *GetCameraSDP) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	if aCtx != nil {
 		*r = *aCtx
 	}
-	var principal *models.Principal
+	var principal *models.User
 	if uprinc != nil {
-		principal = uprinc.(*models.Principal) // this is really a models.Principal, I promise
+		principal = uprinc.(*models.User) // this is really a models.User, I promise
 	}
 
 	if err := o.Context.BindValidRequest(r, route, &Params); err != nil { // bind params

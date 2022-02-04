@@ -14,16 +14,16 @@ import (
 )
 
 // UpgradeSystemHandlerFunc turns a function with the right signature into a upgrade system handler
-type UpgradeSystemHandlerFunc func(UpgradeSystemParams, *models.Principal) middleware.Responder
+type UpgradeSystemHandlerFunc func(UpgradeSystemParams, *models.User) middleware.Responder
 
 // Handle executing the request and returning a response
-func (fn UpgradeSystemHandlerFunc) Handle(params UpgradeSystemParams, principal *models.Principal) middleware.Responder {
+func (fn UpgradeSystemHandlerFunc) Handle(params UpgradeSystemParams, principal *models.User) middleware.Responder {
 	return fn(params, principal)
 }
 
 // UpgradeSystemHandler interface for that can handle valid upgrade system params
 type UpgradeSystemHandler interface {
-	Handle(UpgradeSystemParams, *models.Principal) middleware.Responder
+	Handle(UpgradeSystemParams, *models.User) middleware.Responder
 }
 
 // NewUpgradeSystem creates a new http.Handler for the upgrade system operation
@@ -57,9 +57,9 @@ func (o *UpgradeSystem) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	if aCtx != nil {
 		*r = *aCtx
 	}
-	var principal *models.Principal
+	var principal *models.User
 	if uprinc != nil {
-		principal = uprinc.(*models.Principal) // this is really a models.Principal, I promise
+		principal = uprinc.(*models.User) // this is really a models.User, I promise
 	}
 
 	if err := o.Context.BindValidRequest(r, route, &Params); err != nil { // bind params

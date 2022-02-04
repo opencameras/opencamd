@@ -18,7 +18,7 @@ import (
 	"github.com/opencameras/opencamd/gen/opencamera/restapi/operations/user"
 )
 
-//go:generate swagger generate server --target ../../opencamera --name OpenCamera --spec ../../../spec/opencameras.yaml --principal models.Principal
+//go:generate swagger generate server --target ../../opencamera --name OpenCamera --spec ../../../spec/opencameras.yaml --principal models.User
 
 func configureFlags(api *operations.OpenCameraAPI) {
 	// api.CommandLineOptionsGroups = []swag.CommandLineOptionsGroup{ ... }
@@ -44,13 +44,13 @@ func configureAPI(api *operations.OpenCameraAPI) http.Handler {
 
 	// Applies when the Authorization header is set with the Basic scheme
 	if api.BasicAuthAuth == nil {
-		api.BasicAuthAuth = func(user string, pass string) (*models.Principal, error) {
+		api.BasicAuthAuth = func(user string, pass string) (*models.User, error) {
 			return nil, errors.NotImplemented("basic auth  (basicAuth) has not yet been implemented")
 		}
 	}
 	// Applies when the "x-token" header is set
 	if api.KeyAuth == nil {
-		api.KeyAuth = func(token string) (*models.Principal, error) {
+		api.KeyAuth = func(token string) (*models.User, error) {
 			return nil, errors.NotImplemented("api key auth (key) x-token from header param [x-token] has not yet been implemented")
 		}
 	}
@@ -64,62 +64,62 @@ func configureAPI(api *operations.OpenCameraAPI) http.Handler {
 	// system.UpgradeSystemMaxParseMemory = 32 << 20
 
 	if api.UserCreateUserHandler == nil {
-		api.UserCreateUserHandler = user.CreateUserHandlerFunc(func(params user.CreateUserParams, principal *models.Principal) middleware.Responder {
+		api.UserCreateUserHandler = user.CreateUserHandlerFunc(func(params user.CreateUserParams, principal *models.User) middleware.Responder {
 			return middleware.NotImplemented("operation user.CreateUser has not yet been implemented")
 		})
 	}
 	if api.MediaDownloadVideosHandler == nil {
-		api.MediaDownloadVideosHandler = media.DownloadVideosHandlerFunc(func(params media.DownloadVideosParams, principal *models.Principal) middleware.Responder {
+		api.MediaDownloadVideosHandler = media.DownloadVideosHandlerFunc(func(params media.DownloadVideosParams, principal *models.User) middleware.Responder {
 			return middleware.NotImplemented("operation media.DownloadVideos has not yet been implemented")
 		})
 	}
 	if api.MediaGetCameraSDPHandler == nil {
-		api.MediaGetCameraSDPHandler = media.GetCameraSDPHandlerFunc(func(params media.GetCameraSDPParams, principal *models.Principal) middleware.Responder {
+		api.MediaGetCameraSDPHandler = media.GetCameraSDPHandlerFunc(func(params media.GetCameraSDPParams, principal *models.User) middleware.Responder {
 			return middleware.NotImplemented("operation media.GetCameraSDP has not yet been implemented")
 		})
 	}
 	if api.DeviceGetDeviceInfoHandler == nil {
-		api.DeviceGetDeviceInfoHandler = device.GetDeviceInfoHandlerFunc(func(params device.GetDeviceInfoParams, principal *models.Principal) middleware.Responder {
+		api.DeviceGetDeviceInfoHandler = device.GetDeviceInfoHandlerFunc(func(params device.GetDeviceInfoParams, principal *models.User) middleware.Responder {
 			return middleware.NotImplemented("operation device.GetDeviceInfo has not yet been implemented")
 		})
 	}
 	if api.SystemGetSystemInfoHandler == nil {
-		api.SystemGetSystemInfoHandler = system.GetSystemInfoHandlerFunc(func(params system.GetSystemInfoParams, principal *models.Principal) middleware.Responder {
+		api.SystemGetSystemInfoHandler = system.GetSystemInfoHandlerFunc(func(params system.GetSystemInfoParams, principal *models.User) middleware.Responder {
 			return middleware.NotImplemented("operation system.GetSystemInfo has not yet been implemented")
 		})
 	}
 	if api.UserLogoutUserHandler == nil {
-		api.UserLogoutUserHandler = user.LogoutUserHandlerFunc(func(params user.LogoutUserParams, principal *models.Principal) middleware.Responder {
+		api.UserLogoutUserHandler = user.LogoutUserHandlerFunc(func(params user.LogoutUserParams, principal *models.User) middleware.Responder {
 			return middleware.NotImplemented("operation user.LogoutUser has not yet been implemented")
 		})
 	}
 	if api.UserResetPasswordHandler == nil {
-		api.UserResetPasswordHandler = user.ResetPasswordHandlerFunc(func(params user.ResetPasswordParams, principal *models.Principal) middleware.Responder {
+		api.UserResetPasswordHandler = user.ResetPasswordHandlerFunc(func(params user.ResetPasswordParams, principal *models.User) middleware.Responder {
 			return middleware.NotImplemented("operation user.ResetPassword has not yet been implemented")
 		})
 	}
 	if api.MediaStartLiveSessionHandler == nil {
-		api.MediaStartLiveSessionHandler = media.StartLiveSessionHandlerFunc(func(params media.StartLiveSessionParams, principal *models.Principal) middleware.Responder {
+		api.MediaStartLiveSessionHandler = media.StartLiveSessionHandlerFunc(func(params media.StartLiveSessionParams, principal *models.User) middleware.Responder {
 			return middleware.NotImplemented("operation media.StartLiveSession has not yet been implemented")
 		})
 	}
 	if api.UserTokenObtainHandler == nil {
-		api.UserTokenObtainHandler = user.TokenObtainHandlerFunc(func(params user.TokenObtainParams, principal *models.Principal) middleware.Responder {
+		api.UserTokenObtainHandler = user.TokenObtainHandlerFunc(func(params user.TokenObtainParams, principal *models.User) middleware.Responder {
 			return middleware.NotImplemented("operation user.TokenObtain has not yet been implemented")
 		})
 	}
 	if api.UserTokenRefreshHandler == nil {
-		api.UserTokenRefreshHandler = user.TokenRefreshHandlerFunc(func(params user.TokenRefreshParams, principal *models.Principal) middleware.Responder {
+		api.UserTokenRefreshHandler = user.TokenRefreshHandlerFunc(func(params user.TokenRefreshParams, principal *models.User) middleware.Responder {
 			return middleware.NotImplemented("operation user.TokenRefresh has not yet been implemented")
 		})
 	}
 	if api.MediaUpdateStunServersHandler == nil {
-		api.MediaUpdateStunServersHandler = media.UpdateStunServersHandlerFunc(func(params media.UpdateStunServersParams, principal *models.Principal) middleware.Responder {
+		api.MediaUpdateStunServersHandler = media.UpdateStunServersHandlerFunc(func(params media.UpdateStunServersParams, principal *models.User) middleware.Responder {
 			return middleware.NotImplemented("operation media.UpdateStunServers has not yet been implemented")
 		})
 	}
 	if api.SystemUpgradeSystemHandler == nil {
-		api.SystemUpgradeSystemHandler = system.UpgradeSystemHandlerFunc(func(params system.UpgradeSystemParams, principal *models.Principal) middleware.Responder {
+		api.SystemUpgradeSystemHandler = system.UpgradeSystemHandlerFunc(func(params system.UpgradeSystemParams, principal *models.User) middleware.Responder {
 			return middleware.NotImplemented("operation system.UpgradeSystem has not yet been implemented")
 		})
 	}
