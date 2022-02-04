@@ -14,5 +14,6 @@ require (
 	github.com/jessevdk/go-flags v1.5.0
 	github.com/pion/example-webrtc-applications/v3 v3.0.5
 	github.com/pion/webrtc/v3 v3.1.0-beta.3
+	github.com/rs/cors v1.8.2
 	golang.org/x/net v0.0.0-20220127200216-cd36cc0744dd
 )
