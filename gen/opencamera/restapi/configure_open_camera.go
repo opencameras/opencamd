@@ -38,6 +38,7 @@ func configureAPI(api *operations.OpenCameraAPI) http.Handler {
 	// To continue using redoc as your UI, uncomment the following line
 	// api.UseRedoc()
 
+	api.JSONConsumer = runtime.JSONConsumer()
 	api.MultipartformConsumer = runtime.DiscardConsumer
 
 	api.JSONProducer = runtime.JSONProducer()
@@ -71,11 +72,6 @@ func configureAPI(api *operations.OpenCameraAPI) http.Handler {
 	if api.MediaDownloadVideosHandler == nil {
 		api.MediaDownloadVideosHandler = media.DownloadVideosHandlerFunc(func(params media.DownloadVideosParams, principal *models.User) middleware.Responder {
 			return middleware.NotImplemented("operation media.DownloadVideos has not yet been implemented")
-		})
-	}
-	if api.MediaGetCameraSDPHandler == nil {
-		api.MediaGetCameraSDPHandler = media.GetCameraSDPHandlerFunc(func(params media.GetCameraSDPParams, principal *models.User) middleware.Responder {
-			return middleware.NotImplemented("operation media.GetCameraSDP has not yet been implemented")
 		})
 	}
 	if api.DeviceGetDeviceInfoHandler == nil {
@@ -113,9 +109,9 @@ func configureAPI(api *operations.OpenCameraAPI) http.Handler {
 			return middleware.NotImplemented("operation user.TokenRefresh has not yet been implemented")
 		})
 	}
-	if api.MediaUpdateStunServersHandler == nil {
-		api.MediaUpdateStunServersHandler = media.UpdateStunServersHandlerFunc(func(params media.UpdateStunServersParams, principal *models.User) middleware.Responder {
-			return middleware.NotImplemented("operation media.UpdateStunServers has not yet been implemented")
+	if api.MediaUpdateLiveConfigHandler == nil {
+		api.MediaUpdateLiveConfigHandler = media.UpdateLiveConfigHandlerFunc(func(params media.UpdateLiveConfigParams, principal *models.User) middleware.Responder {
+			return middleware.NotImplemented("operation media.UpdateLiveConfig has not yet been implemented")
 		})
 	}
 	if api.SystemUpgradeSystemHandler == nil {

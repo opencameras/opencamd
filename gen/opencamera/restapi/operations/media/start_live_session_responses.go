@@ -9,6 +9,8 @@ import (
 	"net/http"
 
 	"github.com/go-openapi/runtime"
+
+	"github.com/opencameras/opencamd/gen/opencamera/models"
 )
 
 // StartLiveSessionOKCode is the HTTP code returned for type StartLiveSessionOK
@@ -19,6 +21,11 @@ const StartLiveSessionOKCode int = 200
 swagger:response startLiveSessionOK
 */
 type StartLiveSessionOK struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *models.SDP `json:"body,omitempty"`
 }
 
 // NewStartLiveSessionOK creates StartLiveSessionOK with default headers values
@@ -27,10 +34,73 @@ func NewStartLiveSessionOK() *StartLiveSessionOK {
 	return &StartLiveSessionOK{}
 }
 
+// WithPayload adds the payload to the start live session o k response
+func (o *StartLiveSessionOK) WithPayload(payload *models.SDP) *StartLiveSessionOK {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the start live session o k response
+func (o *StartLiveSessionOK) SetPayload(payload *models.SDP) {
+	o.Payload = payload
+}
+
 // WriteResponse to the client
 func (o *StartLiveSessionOK) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
+	rw.WriteHeader(200)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
+}
+
+// StartLiveSessionBadRequestCode is the HTTP code returned for type StartLiveSessionBadRequest
+const StartLiveSessionBadRequestCode int = 400
+
+/*StartLiveSessionBadRequest bad request
+
+swagger:response startLiveSessionBadRequest
+*/
+type StartLiveSessionBadRequest struct {
+}
+
+// NewStartLiveSessionBadRequest creates StartLiveSessionBadRequest with default headers values
+func NewStartLiveSessionBadRequest() *StartLiveSessionBadRequest {
+
+	return &StartLiveSessionBadRequest{}
+}
+
+// WriteResponse to the client
+func (o *StartLiveSessionBadRequest) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+
 	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
 
-	rw.WriteHeader(200)
+	rw.WriteHeader(400)
+}
+
+// StartLiveSessionInternalServerErrorCode is the HTTP code returned for type StartLiveSessionInternalServerError
+const StartLiveSessionInternalServerErrorCode int = 500
+
+/*StartLiveSessionInternalServerError internal server error
+
+swagger:response startLiveSessionInternalServerError
+*/
+type StartLiveSessionInternalServerError struct {
+}
+
+// NewStartLiveSessionInternalServerError creates StartLiveSessionInternalServerError with default headers values
+func NewStartLiveSessionInternalServerError() *StartLiveSessionInternalServerError {
+
+	return &StartLiveSessionInternalServerError{}
+}
+
+// WriteResponse to the client
+func (o *StartLiveSessionInternalServerError) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+
+	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
+
+	rw.WriteHeader(500)
 }

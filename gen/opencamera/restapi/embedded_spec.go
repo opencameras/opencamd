@@ -55,6 +55,46 @@ func init() {
         }
       }
     },
+    "/media/live/config": {
+      "put": {
+        "security": [
+          {
+            "key": []
+          }
+        ],
+        "description": "Update live session configuration, such as ice servers",
+        "consumes": [
+          "application/json"
+        ],
+        "tags": [
+          "media"
+        ],
+        "summary": "Update live session configuration",
+        "operationId": "updateLiveConfig",
+        "parameters": [
+          {
+            "description": "Live session configuration",
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LiveSessionConfig"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "bad request"
+          },
+          "500": {
+            "description": "internal server error"
+          }
+        }
+      }
+    },
     "/media/live/session": {
       "post": {
         "security": [
@@ -63,6 +103,12 @@ func init() {
           }
         ],
         "description": "Start media session to view camera live status",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "tags": [
           "media"
         ],
@@ -81,67 +127,16 @@ func init() {
         ],
         "responses": {
           "200": {
-            "description": "successful operation"
-          }
-        }
-      }
-    },
-    "/media/sdp": {
-      "get": {
-        "security": [
-          {
-            "key": []
-          }
-        ],
-        "description": "Get camera's SDP data",
-        "tags": [
-          "media"
-        ],
-        "summary": "Get camera's SDP data",
-        "operationId": "getCameraSDP",
-        "responses": {
-          "200": {
             "description": "successful operation",
             "schema": {
               "$ref": "#/definitions/SDP"
             }
-          }
-        }
-      }
-    },
-    "/media/stubservers": {
-      "put": {
-        "security": [
-          {
-            "key": []
-          }
-        ],
-        "description": "Update backend stun servers address",
-        "tags": [
-          "media"
-        ],
-        "summary": "Update backend stun servers address",
-        "operationId": "updateStunServers",
-        "parameters": [
-          {
-            "description": "Created user object",
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              },
-              "example": [
-                "stun.l.google.com:19302"
-              ]
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation"
+          },
+          "400": {
+            "description": "bad request"
+          },
+          "500": {
+            "description": "internal server error"
           }
         }
       }
@@ -449,12 +444,30 @@ func init() {
         }
       }
     },
+    "LiveSessionConfig": {
+      "type": "object",
+      "properties": {
+        "ice_servers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "example": [
+            "stun.l.google.com:19302"
+          ]
+        }
+      }
+    },
     "SDP": {
       "type": "object",
       "properties": {
-        "data": {
+        "sdp": {
           "type": "string",
           "example": ""
+        },
+        "type": {
+          "type": "string",
+          "example": "offer"
         },
         "valid_until": {
           "description": "data is valid until this specified date in UTC.",
@@ -471,6 +484,9 @@ func init() {
           "type": "string",
           "example": "1.0.1"
         },
+        "live_session_config": {
+          "$ref": "#/definitions/LiveSessionConfig"
+        },
         "sdcard_free": {
           "description": "free sd card disk in GB",
           "type": "integer",
@@ -480,15 +496,6 @@ func init() {
           "description": "total sd card disk in GB",
           "type": "integer",
           "example": 10
-        },
-        "stun_servers": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "example": [
-            "stun.l.google.com:19302"
-          ]
         }
       }
     },
@@ -586,6 +593,46 @@ func init() {
         }
       }
     },
+    "/media/live/config": {
+      "put": {
+        "security": [
+          {
+            "key": []
+          }
+        ],
+        "description": "Update live session configuration, such as ice servers",
+        "consumes": [
+          "application/json"
+        ],
+        "tags": [
+          "media"
+        ],
+        "summary": "Update live session configuration",
+        "operationId": "updateLiveConfig",
+        "parameters": [
+          {
+            "description": "Live session configuration",
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LiveSessionConfig"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "bad request"
+          },
+          "500": {
+            "description": "internal server error"
+          }
+        }
+      }
+    },
     "/media/live/session": {
       "post": {
         "security": [
@@ -594,6 +641,12 @@ func init() {
           }
         ],
         "description": "Start media session to view camera live status",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
         "tags": [
           "media"
         ],
@@ -612,67 +665,16 @@ func init() {
         ],
         "responses": {
           "200": {
-            "description": "successful operation"
-          }
-        }
-      }
-    },
-    "/media/sdp": {
-      "get": {
-        "security": [
-          {
-            "key": []
-          }
-        ],
-        "description": "Get camera's SDP data",
-        "tags": [
-          "media"
-        ],
-        "summary": "Get camera's SDP data",
-        "operationId": "getCameraSDP",
-        "responses": {
-          "200": {
             "description": "successful operation",
             "schema": {
               "$ref": "#/definitions/SDP"
             }
-          }
-        }
-      }
-    },
-    "/media/stubservers": {
-      "put": {
-        "security": [
-          {
-            "key": []
-          }
-        ],
-        "description": "Update backend stun servers address",
-        "tags": [
-          "media"
-        ],
-        "summary": "Update backend stun servers address",
-        "operationId": "updateStunServers",
-        "parameters": [
-          {
-            "description": "Created user object",
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              },
-              "example": [
-                "stun.l.google.com:19302"
-              ]
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation"
+          },
+          "400": {
+            "description": "bad request"
+          },
+          "500": {
+            "description": "internal server error"
           }
         }
       }
@@ -980,12 +982,30 @@ func init() {
         }
       }
     },
+    "LiveSessionConfig": {
+      "type": "object",
+      "properties": {
+        "ice_servers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "example": [
+            "stun.l.google.com:19302"
+          ]
+        }
+      }
+    },
     "SDP": {
       "type": "object",
       "properties": {
-        "data": {
+        "sdp": {
           "type": "string",
           "example": ""
+        },
+        "type": {
+          "type": "string",
+          "example": "offer"
         },
         "valid_until": {
           "description": "data is valid until this specified date in UTC.",
@@ -1002,6 +1022,9 @@ func init() {
           "type": "string",
           "example": "1.0.1"
         },
+        "live_session_config": {
+          "$ref": "#/definitions/LiveSessionConfig"
+        },
         "sdcard_free": {
           "description": "free sd card disk in GB",
           "type": "integer",
@@ -1011,15 +1034,6 @@ func init() {
           "description": "total sd card disk in GB",
           "type": "integer",
           "example": 10
-        },
-        "stun_servers": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "example": [
-            "stun.l.google.com:19302"
-          ]
         }
       }
     },

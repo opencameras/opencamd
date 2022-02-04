@@ -11,15 +11,15 @@ import (
 	golangswaggerpaths "path"
 )
 
-// UpdateStunServersURL generates an URL for the update stun servers operation
-type UpdateStunServersURL struct {
+// UpdateLiveConfigURL generates an URL for the update live config operation
+type UpdateLiveConfigURL struct {
 	_basePath string
 }
 
 // WithBasePath sets the base path for this url builder, only required when it's different from the
 // base path specified in the swagger spec.
 // When the value of the base path is an empty string
-func (o *UpdateStunServersURL) WithBasePath(bp string) *UpdateStunServersURL {
+func (o *UpdateLiveConfigURL) WithBasePath(bp string) *UpdateLiveConfigURL {
 	o.SetBasePath(bp)
 	return o
 }
@@ -27,15 +27,15 @@ func (o *UpdateStunServersURL) WithBasePath(bp string) *UpdateStunServersURL {
 // SetBasePath sets the base path for this url builder, only required when it's different from the
 // base path specified in the swagger spec.
 // When the value of the base path is an empty string
-func (o *UpdateStunServersURL) SetBasePath(bp string) {
+func (o *UpdateLiveConfigURL) SetBasePath(bp string) {
 	o._basePath = bp
 }
 
 // Build a url path and query string
-func (o *UpdateStunServersURL) Build() (*url.URL, error) {
+func (o *UpdateLiveConfigURL) Build() (*url.URL, error) {
 	var _result url.URL
 
-	var _path = "/media/stubservers"
+	var _path = "/media/live/config"
 
 	_basePath := o._basePath
 	if _basePath == "" {
@@ -47,7 +47,7 @@ func (o *UpdateStunServersURL) Build() (*url.URL, error) {
 }
 
 // Must is a helper function to panic when the url builder returns an error
-func (o *UpdateStunServersURL) Must(u *url.URL, err error) *url.URL {
+func (o *UpdateLiveConfigURL) Must(u *url.URL, err error) *url.URL {
 	if err != nil {
 		panic(err)
 	}
@@ -58,17 +58,17 @@ func (o *UpdateStunServersURL) Must(u *url.URL, err error) *url.URL {
 }
 
 // String returns the string representation of the path with query string
-func (o *UpdateStunServersURL) String() string {
+func (o *UpdateLiveConfigURL) String() string {
 	return o.Must(o.Build()).String()
 }
 
 // BuildFull builds a full url with scheme, host, path and query string
-func (o *UpdateStunServersURL) BuildFull(scheme, host string) (*url.URL, error) {
+func (o *UpdateLiveConfigURL) BuildFull(scheme, host string) (*url.URL, error) {
 	if scheme == "" {
-		return nil, errors.New("scheme is required for a full url on UpdateStunServersURL")
+		return nil, errors.New("scheme is required for a full url on UpdateLiveConfigURL")
 	}
 	if host == "" {
-		return nil, errors.New("host is required for a full url on UpdateStunServersURL")
+		return nil, errors.New("host is required for a full url on UpdateLiveConfigURL")
 	}
 
 	base, err := o.Build()
@@ -82,6 +82,6 @@ func (o *UpdateStunServersURL) BuildFull(scheme, host string) (*url.URL, error) 
 }
 
 // StringFull returns the string representation of a complete url
-func (o *UpdateStunServersURL) StringFull(scheme, host string) string {
+func (o *UpdateLiveConfigURL) StringFull(scheme, host string) string {
 	return o.Must(o.BuildFull(scheme, host)).String()
 }

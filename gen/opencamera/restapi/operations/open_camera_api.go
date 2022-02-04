@@ -44,6 +44,7 @@ func NewOpenCameraAPI(spec *loads.Document) *OpenCameraAPI {
 		APIKeyAuthenticator: security.APIKeyAuth,
 		BearerAuthenticator: security.BearerAuth,
 
+		JSONConsumer:          runtime.JSONConsumer(),
 		MultipartformConsumer: runtime.DiscardConsumer,
 
 		JSONProducer: runtime.JSONProducer(),
@@ -53,9 +54,6 @@ func NewOpenCameraAPI(spec *loads.Document) *OpenCameraAPI {
 		}),
 		MediaDownloadVideosHandler: media.DownloadVideosHandlerFunc(func(params media.DownloadVideosParams, principal *models.User) middleware.Responder {
 			return middleware.NotImplemented("operation media.DownloadVideos has not yet been implemented")
-		}),
-		MediaGetCameraSDPHandler: media.GetCameraSDPHandlerFunc(func(params media.GetCameraSDPParams, principal *models.User) middleware.Responder {
-			return middleware.NotImplemented("operation media.GetCameraSDP has not yet been implemented")
 		}),
 		DeviceGetDeviceInfoHandler: device.GetDeviceInfoHandlerFunc(func(params device.GetDeviceInfoParams, principal *models.User) middleware.Responder {
 			return middleware.NotImplemented("operation device.GetDeviceInfo has not yet been implemented")
@@ -78,8 +76,8 @@ func NewOpenCameraAPI(spec *loads.Document) *OpenCameraAPI {
 		UserTokenRefreshHandler: user.TokenRefreshHandlerFunc(func(params user.TokenRefreshParams, principal *models.User) middleware.Responder {
 			return middleware.NotImplemented("operation user.TokenRefresh has not yet been implemented")
 		}),
-		MediaUpdateStunServersHandler: media.UpdateStunServersHandlerFunc(func(params media.UpdateStunServersParams, principal *models.User) middleware.Responder {
-			return middleware.NotImplemented("operation media.UpdateStunServers has not yet been implemented")
+		MediaUpdateLiveConfigHandler: media.UpdateLiveConfigHandlerFunc(func(params media.UpdateLiveConfigParams, principal *models.User) middleware.Responder {
+			return middleware.NotImplemented("operation media.UpdateLiveConfig has not yet been implemented")
 		}),
 		SystemUpgradeSystemHandler: system.UpgradeSystemHandlerFunc(func(params system.UpgradeSystemParams, principal *models.User) middleware.Responder {
 			return middleware.NotImplemented("operation system.UpgradeSystem has not yet been implemented")
@@ -123,6 +121,9 @@ type OpenCameraAPI struct {
 	// It has a default implementation in the security package, however you can replace it for your particular usage.
 	BearerAuthenticator func(string, security.ScopedTokenAuthentication) runtime.Authenticator
 
+	// JSONConsumer registers a consumer for the following mime types:
+	//   - application/json
+	JSONConsumer runtime.Consumer
 	// MultipartformConsumer registers a consumer for the following mime types:
 	//   - multipart/form-data
 	MultipartformConsumer runtime.Consumer
@@ -146,8 +147,6 @@ type OpenCameraAPI struct {
 	UserCreateUserHandler user.CreateUserHandler
 	// MediaDownloadVideosHandler sets the operation handler for the download videos operation
 	MediaDownloadVideosHandler media.DownloadVideosHandler
-	// MediaGetCameraSDPHandler sets the operation handler for the get camera s d p operation
-	MediaGetCameraSDPHandler media.GetCameraSDPHandler
 	// DeviceGetDeviceInfoHandler sets the operation handler for the get device info operation
 	DeviceGetDeviceInfoHandler device.GetDeviceInfoHandler
 	// SystemGetSystemInfoHandler sets the operation handler for the get system info operation
@@ -162,8 +161,8 @@ type OpenCameraAPI struct {
 	UserTokenObtainHandler user.TokenObtainHandler
 	// UserTokenRefreshHandler sets the operation handler for the token refresh operation
 	UserTokenRefreshHandler user.TokenRefreshHandler
-	// MediaUpdateStunServersHandler sets the operation handler for the update stun servers operation
-	MediaUpdateStunServersHandler media.UpdateStunServersHandler
+	// MediaUpdateLiveConfigHandler sets the operation handler for the update live config operation
+	MediaUpdateLiveConfigHandler media.UpdateLiveConfigHandler
 	// SystemUpgradeSystemHandler sets the operation handler for the upgrade system operation
 	SystemUpgradeSystemHandler system.UpgradeSystemHandler
 
@@ -235,6 +234,9 @@ func (o *OpenCameraAPI) RegisterFormat(name string, format strfmt.Format, valida
 func (o *OpenCameraAPI) Validate() error {
 	var unregistered []string
 
+	if o.JSONConsumer == nil {
+		unregistered = append(unregistered, "JSONConsumer")
+	}
 	if o.MultipartformConsumer == nil {
 		unregistered = append(unregistered, "MultipartformConsumer")
 	}
@@ -255,9 +257,6 @@ func (o *OpenCameraAPI) Validate() error {
 	}
 	if o.MediaDownloadVideosHandler == nil {
 		unregistered = append(unregistered, "media.DownloadVideosHandler")
-	}
-	if o.MediaGetCameraSDPHandler == nil {
-		unregistered = append(unregistered, "media.GetCameraSDPHandler")
 	}
 	if o.DeviceGetDeviceInfoHandler == nil {
 		unregistered = append(unregistered, "device.GetDeviceInfoHandler")
@@ -280,8 +279,8 @@ func (o *OpenCameraAPI) Validate() error {
 	if o.UserTokenRefreshHandler == nil {
 		unregistered = append(unregistered, "user.TokenRefreshHandler")
 	}
-	if o.MediaUpdateStunServersHandler == nil {
-		unregistered = append(unregistered, "media.UpdateStunServersHandler")
+	if o.MediaUpdateLiveConfigHandler == nil {
+		unregistered = append(unregistered, "media.UpdateLiveConfigHandler")
 	}
 	if o.SystemUpgradeSystemHandler == nil {
 		unregistered = append(unregistered, "system.UpgradeSystemHandler")
@@ -331,6 +330,8 @@ func (o *OpenCameraAPI) ConsumersFor(mediaTypes []string) map[string]runtime.Con
 	result := make(map[string]runtime.Consumer, len(mediaTypes))
 	for _, mt := range mediaTypes {
 		switch mt {
+		case "application/json":
+			result["application/json"] = o.JSONConsumer
 		case "multipart/form-data":
 			result["multipart/form-data"] = o.MultipartformConsumer
 		}
@@ -401,10 +402,6 @@ func (o *OpenCameraAPI) initHandlerCache() {
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/media/sdp"] = media.NewGetCameraSDP(o.context, o.MediaGetCameraSDPHandler)
-	if o.handlers["GET"] == nil {
-		o.handlers["GET"] = make(map[string]http.Handler)
-	}
 	o.handlers["GET"]["/device"] = device.NewGetDeviceInfo(o.context, o.DeviceGetDeviceInfoHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
@@ -433,7 +430,7 @@ func (o *OpenCameraAPI) initHandlerCache() {
 	if o.handlers["PUT"] == nil {
 		o.handlers["PUT"] = make(map[string]http.Handler)
 	}
-	o.handlers["PUT"]["/media/stubservers"] = media.NewUpdateStunServers(o.context, o.MediaUpdateStunServersHandler)
+	o.handlers["PUT"]["/media/live/config"] = media.NewUpdateLiveConfig(o.context, o.MediaUpdateLiveConfigHandler)
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}

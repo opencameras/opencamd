@@ -32,11 +32,9 @@ type ClientOption func(*runtime.ClientOperation)
 type ClientService interface {
 	DownloadVideos(params *DownloadVideosParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*DownloadVideosOK, error)
 
-	GetCameraSDP(params *GetCameraSDPParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetCameraSDPOK, error)
-
 	StartLiveSession(params *StartLiveSessionParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*StartLiveSessionOK, error)
 
-	UpdateStunServers(params *UpdateStunServersParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*UpdateStunServersOK, error)
+	UpdateLiveConfig(params *UpdateLiveConfigParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*UpdateLiveConfigOK, error)
 
 	SetTransport(transport runtime.ClientTransport)
 }
@@ -83,47 +81,6 @@ func (a *Client) DownloadVideos(params *DownloadVideosParams, authInfo runtime.C
 }
 
 /*
-  GetCameraSDP gets camera s s d p data
-
-  Get camera's SDP data
-*/
-func (a *Client) GetCameraSDP(params *GetCameraSDPParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*GetCameraSDPOK, error) {
-	// TODO: Validate the params before sending
-	if params == nil {
-		params = NewGetCameraSDPParams()
-	}
-	op := &runtime.ClientOperation{
-		ID:                 "getCameraSDP",
-		Method:             "GET",
-		PathPattern:        "/media/sdp",
-		ProducesMediaTypes: []string{"application/json"},
-		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"http"},
-		Params:             params,
-		Reader:             &GetCameraSDPReader{formats: a.formats},
-		AuthInfo:           authInfo,
-		Context:            params.Context,
-		Client:             params.HTTPClient,
-	}
-	for _, opt := range opts {
-		opt(op)
-	}
-
-	result, err := a.transport.Submit(op)
-	if err != nil {
-		return nil, err
-	}
-	success, ok := result.(*GetCameraSDPOK)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
-	msg := fmt.Sprintf("unexpected success response for getCameraSDP: API contract not enforced by server. Client expected to get an error, but got: %T", result)
-	panic(msg)
-}
-
-/*
   StartLiveSession starts live media session
 
   Start media session to view camera live status
@@ -165,24 +122,24 @@ func (a *Client) StartLiveSession(params *StartLiveSessionParams, authInfo runti
 }
 
 /*
-  UpdateStunServers updates backend stun servers address
+  UpdateLiveConfig updates live session configuration
 
-  Update backend stun servers address
+  Update live session configuration, such as ice servers
 */
-func (a *Client) UpdateStunServers(params *UpdateStunServersParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*UpdateStunServersOK, error) {
+func (a *Client) UpdateLiveConfig(params *UpdateLiveConfigParams, authInfo runtime.ClientAuthInfoWriter, opts ...ClientOption) (*UpdateLiveConfigOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
-		params = NewUpdateStunServersParams()
+		params = NewUpdateLiveConfigParams()
 	}
 	op := &runtime.ClientOperation{
-		ID:                 "updateStunServers",
+		ID:                 "updateLiveConfig",
 		Method:             "PUT",
-		PathPattern:        "/media/stubservers",
+		PathPattern:        "/media/live/config",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"http"},
 		Params:             params,
-		Reader:             &UpdateStunServersReader{formats: a.formats},
+		Reader:             &UpdateLiveConfigReader{formats: a.formats},
 		AuthInfo:           authInfo,
 		Context:            params.Context,
 		Client:             params.HTTPClient,
@@ -195,13 +152,13 @@ func (a *Client) UpdateStunServers(params *UpdateStunServersParams, authInfo run
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*UpdateStunServersOK)
+	success, ok := result.(*UpdateLiveConfigOK)
 	if ok {
 		return success, nil
 	}
 	// unexpected success response
 	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
-	msg := fmt.Sprintf("unexpected success response for updateStunServers: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	msg := fmt.Sprintf("unexpected success response for updateLiveConfig: API contract not enforced by server. Client expected to get an error, but got: %T", result)
 	panic(msg)
 }
 

@@ -19,8 +19,12 @@ import (
 // swagger:model SDP
 type SDP struct {
 
-	// data
-	Data string `json:"data,omitempty"`
+	// sdp
+	Sdp string `json:"sdp,omitempty"`
+
+	// type
+	// Example: offer
+	Type string `json:"type,omitempty"`
 
 	// data is valid until this specified date in UTC.
 	// Example: 2022-02-02T00:00:00Z

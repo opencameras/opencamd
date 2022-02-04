@@ -7,9 +7,12 @@ package media
 
 import (
 	"fmt"
+	"io"
 
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/strfmt"
+
+	"github.com/opencameras/opencamd/gen/opencamera/models"
 )
 
 // StartLiveSessionReader is a Reader for the StartLiveSession structure.
@@ -26,6 +29,18 @@ func (o *StartLiveSessionReader) ReadResponse(response runtime.ClientResponse, c
 			return nil, err
 		}
 		return result, nil
+	case 400:
+		result := NewStartLiveSessionBadRequest()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
+	case 500:
+		result := NewStartLiveSessionInternalServerError()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	default:
 		return nil, runtime.NewAPIError("response status code does not match any response statuses defined for this endpoint in the swagger spec", response, response.Code())
 	}
@@ -41,13 +56,66 @@ func NewStartLiveSessionOK() *StartLiveSessionOK {
 successful operation
 */
 type StartLiveSessionOK struct {
+	Payload *models.SDP
 }
 
 func (o *StartLiveSessionOK) Error() string {
-	return fmt.Sprintf("[POST /media/live/session][%d] startLiveSessionOK ", 200)
+	return fmt.Sprintf("[POST /media/live/session][%d] startLiveSessionOK  %+v", 200, o.Payload)
+}
+func (o *StartLiveSessionOK) GetPayload() *models.SDP {
+	return o.Payload
 }
 
 func (o *StartLiveSessionOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.SDP)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewStartLiveSessionBadRequest creates a StartLiveSessionBadRequest with default headers values
+func NewStartLiveSessionBadRequest() *StartLiveSessionBadRequest {
+	return &StartLiveSessionBadRequest{}
+}
+
+/* StartLiveSessionBadRequest describes a response with status code 400, with default header values.
+
+bad request
+*/
+type StartLiveSessionBadRequest struct {
+}
+
+func (o *StartLiveSessionBadRequest) Error() string {
+	return fmt.Sprintf("[POST /media/live/session][%d] startLiveSessionBadRequest ", 400)
+}
+
+func (o *StartLiveSessionBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	return nil
+}
+
+// NewStartLiveSessionInternalServerError creates a StartLiveSessionInternalServerError with default headers values
+func NewStartLiveSessionInternalServerError() *StartLiveSessionInternalServerError {
+	return &StartLiveSessionInternalServerError{}
+}
+
+/* StartLiveSessionInternalServerError describes a response with status code 500, with default header values.
+
+internal server error
+*/
+type StartLiveSessionInternalServerError struct {
+}
+
+func (o *StartLiveSessionInternalServerError) Error() string {
+	return fmt.Sprintf("[POST /media/live/session][%d] startLiveSessionInternalServerError ", 500)
+}
+
+func (o *StartLiveSessionInternalServerError) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	return nil
 }
