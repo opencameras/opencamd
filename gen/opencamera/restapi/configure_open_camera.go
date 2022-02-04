@@ -18,7 +18,7 @@ import (
 	"github.com/opencameras/opencamd/gen/opencamera/restapi/operations/user"
 )
 
-//go:generate swagger generate server --target ../../opencamera --name OpenCamera --spec ../../../spec/opencameras.yaml --principal models.User
+//go:generate swagger generate server --target ../../opencamera --name OpenCamera --spec ../../../spec/opencameras.yaml --principal models.User --exclude-main
 
 func configureFlags(api *operations.OpenCameraAPI) {
 	// api.CommandLineOptionsGroups = []swag.CommandLineOptionsGroup{ ... }
