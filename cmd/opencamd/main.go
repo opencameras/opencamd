@@ -3,15 +3,16 @@
 package main
 
 import (
-	"github.com/go-openapi/runtime"
-	"github.com/pion/webrtc/v3"
 	"log"
+	"flag"
+	"context"
 	"net/http"
-	"os"
 
 	"github.com/go-openapi/loads"
 	"github.com/go-openapi/runtime/middleware"
-	"github.com/jessevdk/go-flags"
+	"github.com/go-openapi/runtime"
+	//"github.com/jessevdk/go-flags"
+	"github.com/pion/webrtc/v3"
 	"github.com/opencameras/opencamd/gen/opencamera/models"
 	"github.com/opencameras/opencamd/gen/opencamera/restapi"
 	"github.com/opencameras/opencamd/gen/opencamera/restapi/operations"
@@ -19,12 +20,7 @@ import (
 	mediaImpl "github.com/opencameras/opencamd/pkg/media"
 )
 
-var (
-	videoSource *mediaImpl.LocalFile
-	audioSource *mediaImpl.LocalFile
-)
-
-func createAPIBackend(swaggerSpec *loads.Document) *operations.OpenCameraAPI {
+func createAPIBackend(swaggerSpec *loads.Document, videoSource mediaImpl.Datasource) *operations.OpenCameraAPI {
 	api := operations.NewOpenCameraAPI(swaggerSpec)
 
 	api.JSONConsumer = runtime.JSONConsumer()
@@ -59,20 +55,45 @@ func createAPIBackend(swaggerSpec *loads.Document) *operations.OpenCameraAPI {
 }
 
 func main() {
-	// TODO: change to use input
-	videoSource = &mediaImpl.LocalFile{Filename: "output.h264"}
-	audioSource = &mediaImpl.LocalFile{Filename: "output.ogg"}
+	var (
+		err error
+		localFilename string
+		apiListenPort int
+		mediaListenAddr string
+		videoSource mediaImpl.Datasource
+	)
+	flag.StringVar(&localFilename, "f", "", "local file name as simulation purpose")
+	flag.StringVar(&mediaListenAddr, "la", "localhost:8001", "tcp media server listen address for ffmpeg to stream")
+	flag.IntVar(&apiListenPort, "lp", 8000, "API server listen port")
+
+	flag.Parse()
+
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	if localFilename != "" {
+		videoSource = &mediaImpl.LocalFile{Filename: localFilename}
+	} else {
+		videoSource, err = mediaImpl.NewTcpSocketServer(ctx, mediaListenAddr)
+		if err != nil {
+			log.Fatal(err)
+		}
+		ffmpeg := mediaImpl.NewFfmpeg("0", 30.0, 1280, 720)
+		ffmpeg.Start(ctx, "tcp://" + mediaListenAddr)
+	}
+	defer videoSource.Close()
 
 	swaggerSpec, err := loads.Embedded(restapi.SwaggerJSON, restapi.FlatSwaggerJSON)
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	api := createAPIBackend(swaggerSpec)
+	api := createAPIBackend(swaggerSpec, videoSource)
 	server := restapi.NewServer(api)
 	defer server.Shutdown()
 
-	server.Port = 8000
+	server.Port = apiListenPort
+	/*
 	parser := flags.NewParser(server, flags.Default)
 	parser.ShortDescription = "Opencamd"
 	parser.LongDescription = "Open camera reference daemon"
@@ -93,11 +114,10 @@ func main() {
 		}
 		os.Exit(code)
 	}
-
+	*/
 	server.ConfigureAPI()
 
 	if err := server.Serve(); err != nil {
 		log.Fatalln(err)
 	}
-
 }
